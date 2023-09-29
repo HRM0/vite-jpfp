@@ -9,6 +9,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+app.use(cors());
 // static middleware
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
@@ -18,7 +19,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // routes start here
 app.use('/api', apiRouter);
-app.use(cors());
 
 // logging middleware
 app.use(volleyball);
