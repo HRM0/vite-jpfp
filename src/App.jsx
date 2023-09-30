@@ -8,13 +8,13 @@ function App() {
   
 
   return (
-    <div>
-      <nav>
-        <Link to='/'>Home</Link>
-        <Link to='/students'>Students</Link>
-        <Link to='/campuses'>Campuses</Link>
+    <div className='flexColumn appContainer'>
+      <nav >
+        <Link to='/' className='flex'>Home</Link>
+        <Link to='/students' className='flex'>Students</Link>
+        <Link to='/campuses'className='flex'>Campuses</Link>
       </nav>
-      <main>
+      <main className='flexColumn'> 
         <Routes>
           <Route path='/' element={<Welcome />} />
           <Route path='/students' element={<AllStudents />} />
