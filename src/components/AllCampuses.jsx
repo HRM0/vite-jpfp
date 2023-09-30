@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCampus } from '../store/allCampusSlice';
+import {v1 as uuid} from 'uuid'
 
 const AllCampuses = () => {
     const dispatch = useDispatch()
@@ -27,18 +28,20 @@ const AllCampuses = () => {
                         <h3 className='flex '># of Students</h3>
                     </div>
                     <div className='flex autoWidth'>
-                        <button>Edit</button>
+                        <button>Add</button>
                         <button>Delete</button>
                     </div>
                 </li>
                 {allCampus && allCampus.length > 0 ? 
                     allCampus.map(campus => {
                         return (
-                            <li>
+                            <li key={uuid()}>
                                 <div className='flex '>
                                     <div className='flex autoWidth'>{campus.id}. </div>
                                     <div className='flex '> {campus.name}</div>
-                                    <div className='flex '>student count</div>
+                                    <div className='flex '>{campus.students && campus.students?.length > 0 ? 
+                                        campus.students.length:
+                                        '0'}</div>
                                 </div>
                                 <div className='flex autoWidth'>
                                     <button>Edit</button>

@@ -1,6 +1,7 @@
 * {
     height:100%;
     width:100%;
+    box-sizing: border-box;
 }
 
 body {
@@ -43,8 +44,15 @@ ul > li{
     align-items: center;
 }
 
+.textLeft {
+    justify-content: left;
+}
 .autoWidth {
     width:auto;
+}
+
+.autoHeight {
+    height:auto;
 }
 
 nav {
@@ -71,6 +79,23 @@ nav {
 
 button {
     width: auto;
+    height: auto;
     padding:.5em;
     margin: 0 .5em;
+}
+
+form {
+    text-align: center;
+    margin: auto;
+    padding: 1em;
+}
+
+.fromContainer {
+    height: 75%;
+    width:60%;
+}
+
+.formElement {
+    display: flex;
+    padding: .5em;
 }
