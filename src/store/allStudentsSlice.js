@@ -5,8 +5,40 @@ export const fetchAllStudents = createAsyncThunk(
     "allStudents", async() => {
         try{
             const {data} = await axios.get('http://localhost:3000/api/students')
-            console.log("check",data)
             return data
+        } catch (err) {
+            console.log(err)
+        }
+    }
+)
+
+export const editStudent = createAsyncThunk(
+    "editStudent", async (student) => {
+        try {
+            const {data} = await axios.put(`http://localhost:3000/api/students/${student.id}`,student)
+            return data
+        } catch (err) {
+            throw new Error(err.response.data.errors[0].message)
+        }
+    }
+)
+
+export const addNewStudent = createAsyncThunk(
+    "newStudent", async(student) => {
+        try {
+            const {data} = await axios.post('http://localhost:3000/api/students/', student)
+            return data
+        } catch (err) {
+            throw new Error(err.response.data.errors[0].message)
+        }
+    }
+)
+
+export const deleteSingleStudent = createAsyncThunk(
+    "deleteStudent", async (StudentId) => {
+        try {
+            const {data} = await axios.delete(`http://localhost:3000/api/students/${StudentId}`)
+            return StudentId
         } catch (err) {
             console.log(err)
         }
@@ -41,6 +73,17 @@ const allStudentsSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(fetchAllStudents.fulfilled, (state, action) => {
             state.studentList = action.payload
+        }),
+        builder.addCase(addNewStudent.fulfilled, (state, action) => {
+            const currentStudent = state.studentList
+            currentStudent.push(action.payload)
+            state.studentList = [...currentStudent]
+        }),
+        builder.addCase(addNewStudent.rejected, (state, action) => {
+            state.error= action.error
+        }),
+        builder.addCase(deleteSingleStudent.fulfilled, (state, action) => {
+            state.studentList = state.studentList.filter(el => el.id != action.payload)
         })
     }
 })

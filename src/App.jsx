@@ -3,7 +3,7 @@ import {Routes, Route, Link} from "react-router-dom"
 import Welcome from './components/Welcome';
 import AllStudents from './components/AllStudents'
 import AllCampuses from './components/AllCampuses';
-import Form from './components/Form';
+import StudentForm from './components/StudentForm';
 
 function App() {
   
@@ -20,7 +20,7 @@ function App() {
           <Route path='/' element={<Welcome />} />
           <Route path='/students' element={<AllStudents />} />
           <Route path='/campuses' element={<AllCampuses />} />
-          <Route path='/form' element={<Form />} />
+          <Route path='/studentForm' element={<StudentForm />} />
         </Routes>
       </main>
     </div>
