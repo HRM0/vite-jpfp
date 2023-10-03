@@ -2,7 +2,7 @@ import React,{useEffect, useState} from "react";
 import { useLocation } from "react-router-dom";
 import { fetchAllCampus } from "../store/allCampusSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewStudent, editStudent } from "../store/allStudentsSlice";
+import { addNewStudent, editStudent, fetchAllStudents } from "../store/allStudentsSlice";
 
 const StudentForm = (props) => {
     const dispatch = useDispatch()
@@ -10,7 +10,6 @@ const StudentForm = (props) => {
         props.data
         :useLocation().state);
     console.log(formData)
-
     const allCampus = useSelector((state)=> {
         //if there are errors, send an alert and then clear the error
         if (state.allCampus.error != "") {
@@ -31,20 +30,22 @@ const StudentForm = (props) => {
             campusId: Number(formData.student.campusId),
             id:formData.student.id
         }
-        
+
         try {   
             formData.type === 'Edit' ? 
                 dispatch(editStudent(newStudent))
                 : dispatch(addNewStudent(newStudent))
-            
+            dispatch(fetchAllStudents())
         } catch (err) {
             console.log(err)
         }
     }
 
     useEffect(() => {
-        dispatch(fetchAllCampus())
-    },[])
+        if (allCampus.length === 0) {
+            dispatch(fetchAllCampus());
+        }
+    }, [dispatch, allCampus]);
 
     const labelsAndInputs = () => {
         const labels = Object.keys(formData.student);

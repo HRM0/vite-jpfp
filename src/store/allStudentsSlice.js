@@ -74,6 +74,10 @@ const allStudentsSlice = createSlice({
         builder.addCase(fetchAllStudents.fulfilled, (state, action) => {
             state.studentList = action.payload
         }),
+        builder.addCase(editStudent.fulfilled, (state, action) => {
+            console.log(state.studentList,state.studentList[action.payload.id],action.payload)
+            state.studentList[action.payload.id] = action.payload
+        }),
         builder.addCase(addNewStudent.fulfilled, (state, action) => {
             const currentStudent = state.studentList
             currentStudent.push(action.payload)

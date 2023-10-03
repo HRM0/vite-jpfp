@@ -31,7 +31,6 @@ const AllStudents = () => {
     const handleExpand = (id) => {
         setSelectedForm(id)
         setExpanded(!expanded)
-        console.log("check",id)
     }
 
     function handleDelete(id) {

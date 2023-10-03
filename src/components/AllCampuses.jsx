@@ -1,10 +1,21 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllCampus } from '../store/allCampusSlice';
+import { deleteSingleCampus, fetchAllCampus } from '../store/allCampusSlice';
 import {v1 as uuid} from 'uuid'
+import CampusForm from './CampusForm';
 
 const AllCampuses = () => {
     const dispatch = useDispatch()
+    const [expanded, setExpanded] = useState(false)
+    const [selectedForm, setSelectedForm] = useState(null);
+
+    const newCampus = {
+        name: "name",
+        address: "address",
+        description: "description",
+        imageUrl: "imageUrl",
+        campus: 'choose',
+    }
 
     const allCampus = useSelector((state)=> {
         //if there are errors, send an alert and then clear the error
@@ -14,7 +25,16 @@ const AllCampuses = () => {
         }
         return state.allCampus.campusList
     })
-    console.log(allCampus)
+    
+    const handleExpand = (id) => {
+        setSelectedForm(id)
+        setExpanded(!expanded)
+    }
+
+    function handleDelete(id) {
+        dispatch(deleteSingleCampus(id))
+    }
+
     useEffect(() => {
         dispatch(fetchAllCampus())
     }, [])
@@ -28,24 +48,39 @@ const AllCampuses = () => {
                         <h3 className='flex '># of Students</h3>
                     </div>
                     <div className='flex autoWidth'>
-                        <button>Add</button>
+                        <button onClick={() => handleExpand('add')}>Add</button>
                         <button>Delete</button>
                     </div>
                 </li>
+                {expanded ? selectedForm === 'add' && 
+                        <li className='flex autoWidth'>
+                            <CampusForm data={{campus:newCampus,type:'Add'}} />
+                        </li>
+                        : <></> }
                 {allCampus && allCampus.length > 0 ? 
                     allCampus.map(campus => {
                         return (
                             <li key={uuid()}>
-                                <div className='flex '>
-                                    <div className='flex autoWidth'>{campus.id}. </div>
-                                    <div className='flex '> {campus.name}</div>
-                                    <div className='flex '>{campus.students && campus.students?.length > 0 ? 
-                                        campus.students.length:
-                                        '0'}</div>
-                                </div>
-                                <div className='flex autoWidth'>
-                                    <button>Edit</button>
-                                    <button>Delete</button>
+                                <div className='flexColumn '>
+                                    <div className='flex '>
+                                        <div className='flex '>
+                                            <div className='flex autoWidth'>{campus.id}. </div>
+                                            <div className='flex '> {campus.name}</div>
+                                            <div className='flex '>{campus.students && campus.students?.length > 0 ? 
+                                                campus.students.length:
+                                                '0'}</div>
+                                        </div>
+                                        <div className='flex autoWidth'>
+                                            <button onClick={() => handleExpand(campus.id)}>Edit</button>
+                                            <button onClick={() => handleDelete(campus.id)}>Delete</button>
+                                        </div>
+                                    </div>
+                                    {expanded ? selectedForm === campus.id && 
+                                        <div className='flex'>
+                                            <CampusForm data={{campus:campus,type:'Edit'}} />
+                                        </div>
+                                        : <></> 
+                                    }
                                 </div>
                             </li>
                         )
